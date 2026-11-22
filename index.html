@@ -399,7 +399,7 @@ let BOX=null;
 Promise.all(['700 40px Caveat','700 40px Manrope','600 40px Manrope'].map(f=>document.fonts.load(f).catch(()=>0))).then(()=>{
   try{ BOX=GoodnessBox(document.getElementById('boxCanvas'),{state:st}); }catch(e){ console.warn('WebGL box unavailable',e); return; }
   const foodImg=new Image(); foodImg.onload=()=>BOX.setFood(foodImg,[440,30,720,720]); foodImg.src='img/nasi.jpg';
-  ScrollTrigger.create({trigger:'.box-section',start:'top bottom',end:'bottom top',onToggle:s=>s.isActive?BOX.play():BOX.pause()});
+  new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?BOX.play():BOX.pause())).observe(document.getElementById('boxCanvas'));
 });
 const boxTl=gsap.timeline({scrollTrigger:{trigger:'.box-section',start:'top top',end:'+=2400',scrub:1,pin:true}});
 boxTl.fromTo(st,{rot:-0.35,lid:0},{rot:Math.PI*2-0.35,ease:'none',duration:4},0)
